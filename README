@@ -1,0 +1,19 @@
+This project implements multiple client chat program through client-server architecture using socket C/C++ programming in Linux. 
+
+team5_common.h: 
+
+Contains constants and data structures common to both client and server. Combined 16 bit version and type fields have been represented by a single hex code. These codes for different messages are defined in this file. Mask to get information from this combined field is also described here. All message types contain a common header. Attribute header has also been declared. Different message types use different one or more attribute headers and attributes.
+
+team5_client.h and team5_client.cc:
+
+Implement client code. On starting, client sends a  join message and receives ACK or NAK. On receving NAK, client exits. On receiving ACK it proceeds. Client waits for messages from both console and server. On receiving a message from console, it sends a send message to server. On receiving a message from server (FWD, ACK, NAK, ONLINE, OFFLINE, IDLE), it performs appropriate actions.
+
+team5_sever.h and team5_server.cc:
+
+Implement server code. Server maintains a queue (STL vector) of struct client_record (which keeps information about client's socket descriptor, username and status). On receiving request from a new client, it determines whether it can accomodate it in the chatroom and sends ACK or NAK. If it accepts the client, it sends ACK and sends ONLINE message to all the other clients. When a client leaves the chatroom, it sends OFFLINE message to all the other clients. On receiving SEND message, server sends FWD message to all the other clients.
+
+run make to compile the program
+
+./client <username> <server_ip> <server_port>
+
+./server <server_ip> <server_port> <max_clients>
